@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>英語コース選択ガイド｜多言語ベース</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #548148;
+    --terra: #5b3b22;
+    --terra-l: #eeddd0;
+    --light: #d9e8d6;
+    --gray: #595959;
+    --lgray: #ede8e0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    color: #222;
+    background: #f5f0e9;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 32px 28px 48px;
+    font-size: 14px;
+    line-height: 1.75;
+  }
+
+  .header {
+    text-align: center;
+    padding-bottom: 24px;
+    border-bottom: 3px solid var(--navy);
+    margin-bottom: 28px;
+  }
+  .brand { font-size: 11px; letter-spacing: .2em; color: var(--terra); font-weight: 700; margin-bottom: 6px; }
+  .header h1 { font-family: 'Noto Serif JP', serif; font-size: 22px; color: var(--navy); font-weight: 700; margin-bottom: 6px; }
+  .header p { font-size: 13px; color: var(--gray); }
+
+  .section-title { display: flex; align-items: center; gap: 10px; margin: 28px 0 14px; }
+  .step-badge { background: var(--navy); color: #fff; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; letter-spacing: .08em; white-space: nowrap; }
+  .section-title h2 { font-size: 15px; font-weight: 700; color: var(--navy); }
+
+  .level-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 6px; }
+  .level-card { border: 2px solid var(--light); border-radius: 10px; padding: 14px 16px; background: #fff; }
+  .level-card .tag { font-size: 10px; font-weight: 700; letter-spacing: .1em; color: var(--terra); margin-bottom: 4px; }
+  .level-card .title { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+  .level-card .desc { font-size: 12px; color: var(--gray); line-height: 1.6; }
+  .level-card.highlight { border-color: var(--navy); background: var(--light); }
+
+  .course-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .course-card { border-radius: 10px; overflow: hidden; border: 1px solid #d4ccbf; cursor: pointer; transition: transform .15s, box-shadow .15s; }
+  .course-card:active { transform: scale(.97); }
+  .course-card:hover { box-shadow: 0 4px 16px rgba(84,129,72,.2); }
+  .course-head { background: var(--navy); color: #fff; padding: 10px 14px; }
+  .course-head .emoji { font-size: 18px; margin-bottom: 2px; display: block; }
+  .course-head .name { font-size: 14px; font-weight: 700; }
+  .course-head .sub { font-size: 11px; opacity: .8; margin-top: 2px; }
+  .tap-hint { font-size: 10px; color: rgba(255,255,255,.7); margin-top: 4px; letter-spacing: .04em; }
+  .course-body { background: #fff; padding: 12px 14px; }
+  .course-body .for { font-size: 11px; font-weight: 700; color: var(--terra); margin-bottom: 4px; letter-spacing: .05em; }
+  .course-body .goal { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+  .course-body .detail { font-size: 12px; color: var(--gray); line-height: 1.6; }
+  .course-card.terra .course-head { background: var(--terra); }
+
+  .pace-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .pace-card { border-radius: 10px; padding: 14px 16px; border: 2px solid; }
+  .pace-card.shuchu { border-color: var(--terra); background: var(--terra-l); }
+  .pace-card.yukkuri { border-color: var(--navy); background: var(--light); }
+  .pace-card .pace-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .pace-card.shuchu .pace-title { color: var(--terra); }
+  .pace-card.yukkuri .pace-title { color: var(--navy); }
+  .pace-card .pace-count { font-size: 12px; font-weight: 700; margin-bottom: 6px; color: #333; }
+  .pace-card .pace-desc { font-size: 12px; color: var(--gray); line-height: 1.6; }
+
+  .flow { background: #fff; border-radius: 10px; padding: 16px 20px; }
+  .flow-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
+  .flow-row:last-child { margin-bottom: 0; }
+  .flow-num { background: var(--navy); color: #fff; width: 22px; height: 22px; border-radius: 50%; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .flow-text { font-size: 13px; color: #333; line-height: 1.6; }
+  .flow-text strong { color: var(--navy); }
+
+  .note-box { background: var(--terra-l); border-left: 4px solid var(--terra); border-radius: 0 8px 8px 0; padding: 12px 16px; font-size: 12px; color: var(--gray); line-height: 1.7; margin-top: 16px; }
+
+  /* modal */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(10,20,10,.5); z-index: 100; align-items: flex-end; justify-content: center; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: #fff; border-radius: 20px 20px 0 0; width: 100%; max-width: 760px; max-height: 85vh; overflow-y: auto; padding: 0 0 32px; transform: translateY(100%); transition: transform .3s cubic-bezier(.32,1,.6,1); }
+  .modal-overlay.open .modal { transform: translateY(0); }
+  .modal-bar { width: 40px; height: 4px; background: #ddd; border-radius: 2px; margin: 12px auto 0; }
+  .modal-head { padding: 16px 20px 14px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 12px; }
+  .modal-emoji { font-size: 26px; }
+  .modal-head-text .modal-name { font-size: 17px; font-weight: 700; color: var(--navy); }
+  .modal-head-text .modal-sub { font-size: 12px; color: var(--gray); margin-top: 1px; }
+  .modal-close { margin-left: auto; background: var(--lgray); border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 16px; cursor: pointer; color: var(--gray); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .modal-body { padding: 20px 20px 0; }
+  .phase-list { list-style: none; position: relative; }
+  .phase-list::before { content: ''; position: absolute; left: 18px; top: 0; bottom: 0; width: 2px; background: var(--light); }
+  .phase-item { display: flex; gap: 14px; margin-bottom: 18px; position: relative; }
+  .phase-item:last-child { margin-bottom: 0; }
+  .phase-dot { width: 38px; height: 38px; border-radius: 50%; background: var(--navy); color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; z-index: 1; line-height: 1.2; text-align: center; }
+  .phase-dot.terra { background: var(--terra); }
+  .phase-content { padding-top: 4px; }
+  .phase-title { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+  .phase-desc { font-size: 12px; color: var(--gray); line-height: 1.65; }
+  .lesson-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .pill { background: var(--lgray); border: 1px solid #ccc4b8; border-radius: 20px; padding: 3px 10px; font-size: 11px; color: #333; white-space: nowrap; }
+  .pill.highlight { background: var(--light); border-color: var(--navy); color: var(--navy); font-weight: 700; }
+  .modal-counts { display: flex; gap: 8px; margin: 18px 0 0; }
+  .count-chip { flex: 1; border-radius: 8px; padding: 10px 12px; text-align: center; }
+  .count-chip.s { background: var(--terra-l); }
+  .count-chip.y { background: var(--light); }
+  .count-chip .cc-label { font-size: 10px; font-weight: 700; letter-spacing: .05em; }
+  .count-chip.s .cc-label { color: var(--terra); }
+  .count-chip.y .cc-label { color: var(--navy); }
+  .count-chip .cc-val { font-size: 16px; font-weight: 700; color: #222; margin-top: 2px; }
+
+  /* pricing */
+  .campaign-banner { background: var(--terra); color: #fff; border-radius: 10px; padding: 14px 18px; display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+  .campaign-tag { font-size: 11px; font-weight: 700; letter-spacing: .06em; white-space: nowrap; background: rgba(255,255,255,.2); border-radius: 20px; padding: 4px 10px; }
+  .campaign-text { font-size: 13px; line-height: 1.6; }
+  .campaign-text strong { font-size: 15px; }
+  .zero { font-size: 18px; font-weight: 700; }
+  .price-toggle { display: flex; border: 2px solid var(--navy); border-radius: 8px; overflow: hidden; margin-bottom: 14px; }
+  .price-toggle button { flex: 1; padding: 9px 0; font-size: 13px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; border: none; cursor: pointer; transition: background .15s, color .15s; background: #fff; color: var(--navy); }
+  .price-toggle button.active { background: var(--navy); color: #fff; }
+  .price-table-wrap { display: none; }
+  .price-table-wrap.show { display: block; }
+  .price-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .price-table th, .price-table td { padding: 10px 12px; text-align: center; border-bottom: 1px solid #e0d9cf; }
+  .price-table th { background: var(--navy); color: #fff; font-size: 12px; font-weight: 700; }
+  .price-table th:first-child { text-align: left; }
+  .price-table td:first-child { text-align: left; font-weight: 700; color: var(--navy); background: var(--lgray); font-size: 12px; }
+  .price-table tr:last-child td { border-bottom: none; }
+  .price-table tr:nth-child(even) td:not(:first-child) { background: #faf7f2; }
+  .price-now { font-size: 15px; font-weight: 700; color: var(--navy); }
+  .price-orig { font-size: 11px; color: #aaa; text-decoration: line-through; margin-bottom: 2px; }
+  .price-note { font-size: 11px; color: var(--gray); margin-top: 10px; line-height: 1.7; }
+
+  .footer { text-align: center; margin-top: 36px; padding-top: 18px; border-top: 1px solid #d4ccbf; font-size: 12px; color: var(--gray); }
+
+  @media print {
+    body { padding: 20px; background: #fff; }
+    .course-grid, .level-cards, .pace-row { break-inside: avoid; }
+    .modal-overlay { display: none !important; }
+    .tap-hint { display: none; }
+    .price-table-wrap { display: block !important; }
+    .price-toggle { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="brand">多言語ベース 英語コース</div>
+  <h1>自分に合ったコースを選ぼう</h1>
+  <p>3つのステップで、あなたにぴったりのコースが見つかります。</p>
+</div>
+
+<div class="section-title">
+  <span class="step-badge">STEP 1</span>
+  <h2>今の自分はどのタイプ？</h2>
+</div>
+<div class="level-cards">
+  <div class="level-card">
+    <div class="tag">タイプ A</div>
+    <div class="title">英語を使う機会がほぼなかった</div>
+    <div class="desc">学校では習ったけど、会話経験はほぼゼロ。英語を話すのは初めての感覚。</div>
+  </div>
+  <div class="level-card highlight">
+    <div class="tag">タイプ B</div>
+    <div class="title">文法や単語は知っているが口から出ない</div>
+    <div class="desc">受験英語や学校英語の経験あり。読むと分かるが、話せないと感じている。</div>
+  </div>
+</div>
+<div class="note-box">
+  💡 当校の英語コースは<strong>タイプ A・B どちらの方にも対応しています。</strong>どちらに近いかを自分で判断する必要はありません。体験授業でご一緒に確認します。
+</div>
+
+<div class="section-title" style="margin-top:32px;">
+  <span class="step-badge">STEP 2</span>
+  <h2>英語で何をしたい？</h2>
+</div>
+<div class="course-grid">
+
+  <div class="course-card" onclick="openModal('oshi')">
+    <div class="course-head">
+      <span class="emoji">🎵</span>
+      <div class="name">推し活コース</div>
+      <div class="sub">洋楽・洋画・海外アーティスト</div>
+      <div class="tap-hint">タップしてコースの流れを見る →</div>
+    </div>
+    <div class="course-body">
+      <div class="for">こんな人に</div>
+      <div class="goal">「推しの言葉を<br>直接受け取りたい」</div>
+      <div class="detail">好きなアーティストのインタビューや、映画・ドラマを字幕なしで楽しめるようになることを目指します。推しの話題を英語で語る力が身につきます。</div>
+    </div>
+  </div>
+
+  <div class="course-card" onclick="openModal('travel')">
+    <div class="course-head">
+      <span class="emoji">✈️</span>
+      <div class="name">旅行コース</div>
+      <div class="sub">英語圏への旅行・海外体験</div>
+      <div class="tap-hint">タップしてコースの流れを見る →</div>
+    </div>
+    <div class="course-body">
+      <div class="for">こんな人に</div>
+      <div class="goal">「旅先で<br>英語で動けるようになりたい」</div>
+      <div class="detail">注文・交通・道案内・トラブル対応など、旅行中に実際に使う場面を中心に練習します。旅行前の短期集中にも最適です。</div>
+    </div>
+  </div>
+
+  <div class="course-card" onclick="openModal('grammar')">
+    <div class="course-head">
+      <span class="emoji">📖</span>
+      <div class="name">文法コース</div>
+      <div class="sub">会話 ＋ 読み書きもしっかり</div>
+      <div class="tap-hint">タップしてコースの流れを見る →</div>
+    </div>
+    <div class="course-body">
+      <div class="for">こんな人に</div>
+      <div class="goal">「会話も読み書きも<br>バランスよく身につけたい」</div>
+      <div class="detail">会話練習に加えて、毎回「書く課題」と文法の確認を組み込んでいます。英語を総合的に使えるようになりたい方向けです。</div>
+    </div>
+  </div>
+
+  <div class="course-card terra" onclick="openModal('study')">
+    <div class="course-head">
+      <span class="emoji">🎓</span>
+      <div class="name">留学コース</div>
+      <div class="sub">大学・語学学校への留学準備</div>
+      <div class="tap-hint">タップしてコースの流れを見る →</div>
+    </div>
+    <div class="course-body">
+      <div class="for">こんな人に</div>
+      <div class="goal">「留学先で<br>英語で生活・学習できるようになりたい」</div>
+      <div class="detail">受験英語レベルの知識を「話す力」に変え、キャンパス・授業・寮・プレゼンまで留学生活を丸ごと練習します。</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="section-title" style="margin-top:32px;">
+  <span class="step-badge">STEP 3</span>
+  <h2>どちらのペースで進める？</h2>
+</div>
+<div class="pace-row">
+  <div class="pace-card shuchu">
+    <div class="pace-title">⚡ 集中コース</div>
+    <div class="pace-count">全12回</div>
+    <div class="pace-desc">短期間でぐっと伸ばしたい方向け。旅行前・留学前などの期限がある場合にもおすすめです。</div>
+  </div>
+  <div class="pace-card yukkuri">
+    <div class="pace-title">🌱 ゆっくりコース（メイン）</div>
+    <div class="pace-count">全18〜20回</div>
+    <div class="pace-desc">復習回が入り、丁寧に定着させながら進みます。継続しやすく、長く続けたい方に最適です。</div>
+  </div>
+</div>
+
+<div class="section-title" style="margin-top:32px;">
+  <span class="step-badge">まとめ</span>
+  <h2>コース選びの流れ</h2>
+</div>
+<div class="flow">
+  <div class="flow-row">
+    <div class="flow-num">1</div>
+    <div class="flow-text"><strong>無料体験（90分）</strong>に参加する<br>実際に話してみることで、現在地と方向性が自然に見えてきます。</div>
+  </div>
+  <div class="flow-row">
+    <div class="flow-num">2</div>
+    <div class="flow-text">体験後に<strong>目的・ペース</strong>を相談して決める<br>推し活 / 旅行 / 文法 / 留学 × 集中 or ゆっくり の組み合わせから選びます。</div>
+  </div>
+  <div class="flow-row">
+    <div class="flow-num">3</div>
+    <div class="flow-text">コーススタート<br>少人数制（3名まで）で、自分のペースで進められます。</div>
+  </div>
+</div>
+<div class="note-box" style="margin-top:16px;">
+  コースは途中でも変更・追加できます。まずは体験で話してみてください。
+</div>
+
+<div class="section-title" style="margin-top:36px;">
+  <span class="step-badge" style="background:var(--terra);">料金</span>
+  <h2>月謝・料金表（月額・税込）</h2>
+</div>
+<div class="campaign-banner">
+  <div class="campaign-tag">🎉 オープンキャンペーン</div>
+  <div class="campaign-text">8月中のご入会で<br><strong>入会金 ¥10,000 → <span class="zero">¥0</span></strong></div>
+</div>
+<div class="price-toggle">
+  <button class="active" onclick="switchPrice('general', this)">一般（週1回 90分）</button>
+  <button onclick="switchPrice('student', this)">学生（週1回 60分）</button>
+</div>
+
+<div class="price-table-wrap show" id="price-general">
+  <table class="price-table">
+    <thead><tr><th></th><th>推し活・旅行コース</th><th>文法コース</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>🌱 ゆっくり（全18回）</td>
+        <td><div class="price-orig">¥19,800</div><div class="price-now">¥15,200<small>/月</small></div></td>
+        <td><div class="price-orig">¥24,200</div><div class="price-now">¥19,800<small>/月</small></div></td>
+      </tr>
+      <tr>
+        <td>⚡ 集中（全12回）</td>
+        <td><div class="price-orig">¥24,200</div><div class="price-now">¥19,800<small>/月</small></div></td>
+        <td><div class="price-orig">¥29,800</div><div class="price-now">¥24,200<small>/月</small></div></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="price-table-wrap" id="price-student">
+  <table class="price-table">
+    <thead><tr><th></th><th>推し活・旅行コース</th><th>文法コース</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>🌱 ゆっくり（全18回）</td>
+        <td><div class="price-orig">¥19,800</div><div class="price-now">¥10,200<small>/月</small></div></td>
+        <td><div class="price-orig">¥24,200</div><div class="price-now">¥14,800<small>/月</small></div></td>
+      </tr>
+      <tr>
+        <td>⚡ 集中（全12回）</td>
+        <td><div class="price-orig">¥24,200</div><div class="price-now">¥14,800<small>/月</small></div></td>
+        <td><div class="price-orig">¥29,800</div><div class="price-now">¥19,200<small>/月</small></div></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p class="price-note">
+  ※ キャンペーン価格は8月中のご入会に適用されます。<br>
+  ※ 取り消し線は通常価格。表示価格はキャンペーン適用後の月額です。<br>
+  ※ 学生料金は一般料金より¥5,000引き。学生証のご提示をお願いします。<br>
+  ※ 留学コースの料金は別途ご案内いたします。無料体験後にご相談ください。
+</p>
+
+<!-- モーダル -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeOnBg(event)">
+  <div class="modal" id="modal">
+    <div class="modal-bar"></div>
+    <div class="modal-head">
+      <div class="modal-emoji" id="m-emoji"></div>
+      <div class="modal-head-text">
+        <div class="modal-name" id="m-name"></div>
+        <div class="modal-sub" id="m-sub"></div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <ul class="phase-list" id="m-phases"></ul>
+      <div class="modal-counts" id="m-counts"></div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  多言語ベース（湯田温泉 街歩き多言語ベース）｜SHOINBASE（ショウインベース）<br>
+  LINE: <strong>@tagengo_base_yamaguchi</strong>（無料体験のご予約はLINEから）
+</div>
+
+<script>
+const courses = {
+  oshi: {
+    emoji: '🎵', name: '推し活コース', sub: '洋楽・洋画・海外アーティスト',
+    phases: [
+      { label: 'P1', title: '話す基地を作る（共通）', desc: '知っている英語を口から出す練習からスタート。意見の言い方・リアクション・詰まったときの切り抜け方を体得します。', pills: ['自己紹介・好きなものを話す', '意見を言う・質問する', '自然なリアクション', '初カフェ実践'], terra: false },
+      { label: 'P2', title: '推しの話題で会話する', desc: '好きなアーティスト・作品を英語で紹介・語る練習。街の英語（看板・メニュー）も声に出して読みます。', pills: ['推しを英語で紹介する', '街歩き実践', '作品の感想を深く語る', '知らない単語を言い換える'], terra: false },
+      { label: 'P3', title: '字幕なしで楽しめるようになる', desc: 'インタビュー動画のシャドーイング、ナチュラルスピードへの慣れ。最終回は好きな作品を字幕なしで1エピソード完走。', pills: ['シャドーイング', 'カフェで作品トーク', '景色×作品トーク', '【仕上げ】字幕なし完走'], terra: true }
+    ], shuchu: '12回', yukkuri: '18回'
+  },
+  travel: {
+    emoji: '✈️', name: '旅行コース', sub: '英語圏への旅行・海外体験',
+    phases: [
+      { label: 'P1', title: '話す基地を作る（共通）', desc: '知っている英語を口から出す練習。意見の言い方・リアクション・詰まったときの切り抜け方を体得します。', pills: ['自己紹介・好きなものを話す', '意見を言う・質問する', '自然なリアクション', '初カフェ実践'], terra: false },
+      { label: 'P2', title: '旅行で使う日常英語', desc: '「よく聞かれる質問への返答」から「交通・予約・トラブル対応」まで、旅行中に実際に起こる場面を網羅します。', pills: ['定番質問に答える', '道を聞く（散歩実践）', '交通・予約・手続き', 'トラブル対応'], terra: false },
+      { label: 'P3', title: '旅行を自分の言葉で楽しむ', desc: '体験を流暢に語り、細かいリクエストも英語で伝えられるように。最終回は旅行フルシミュレーション。', pills: ['体験を語る（過去形）', 'カフェで細かい注文', '道案内の連続確認', '【仕上げ】フルコース実践'], terra: true }
+    ], shuchu: '12回', yukkuri: '18回'
+  },
+  grammar: {
+    emoji: '📖', name: '文法コース', sub: '会話 ＋ 読み書きもしっかり',
+    phases: [
+      { label: 'P1', title: '文法の骨格を声に出す', desc: '語順・時制・疑問文を「話しながら」整理します。毎回書く課題あり。文法ミニレッスンが2回に1回入ります。', pills: ['語順を話して掴む', '時制を使い分ける', '質問文を自在に作る', '初カフェ実践'], terra: false },
+      { label: 'P2', title: '読み書きと会話を組み合わせる', desc: '仮定表現・現在完了を使った会話。短い英語記事を読んで意見を述べる練習も加わります。', pills: ['仮定表現で会話を広げる', '街の英語を読む（散歩実践）', '記事を読んで意見を言う', '英語で書いて定着'], terra: false },
+      { label: 'P3', title: '複雑な表現・まとまった文章へ', desc: '関係代名詞・接続詞など複雑な構造の文を話す・書く練習。最終回は10分間フリートーク＋その内容を英語で書く。', pills: ['複雑な文を話す・書く', 'カフェで深いトーク', '200語の意見文を書く', '【仕上げ】フリートーク＋記述'], terra: true }
+    ], shuchu: '12回', yukkuri: '20回'
+  },
+  study: {
+    emoji: '🎓', name: '留学コース', sub: '大学・語学学校への留学準備',
+    phases: [
+      { label: 'P1', title: '知識を声に変える', desc: '受験で身につけた文法・語彙を「話す回路」に変えます。文法の説明は一切なし。アウトプットに特化。', pills: ['時制を切り替えながら話す', '意見を構造的に言う', '聞き直す・確認する', '初カフェ実践'], terra: false },
+      { label: 'P2', title: '留学生活の英語を体得する', desc: '留学初日から使う場面をフルカバー。キャンパス・授業・街・寮の英語を実践形式で練習します。', pills: ['自己紹介・友達作り', '教授への質問・相談', '街で情報を聞く（散歩実践）', 'ルームメイト交渉'], terra: false },
+      { label: 'P3', title: '学術英語・発信力を身につける', desc: 'セミナーでの議論・プレゼン・Q&A対応まで。最終回は「初対面→授業→議論→生活交渉」の留学フルシミュレーション。', pills: ['ディスカッション・議論', 'カフェで深いテーマを話す', 'プレゼン・サインポスティング', '【仕上げ】留学シミュレーション'], terra: true }
+    ], shuchu: '12回', yukkuri: '18回'
+  }
+};
+
+function openModal(key) {
+  const c = courses[key];
+  document.getElementById('m-emoji').textContent = c.emoji;
+  document.getElementById('m-name').textContent = c.name;
+  document.getElementById('m-sub').textContent = c.sub;
+  document.getElementById('m-phases').innerHTML = c.phases.map(ph => `
+    <li class="phase-item">
+      <div class="phase-dot${ph.terra ? ' terra' : ''}">${ph.label}</div>
+      <div class="phase-content">
+        <div class="phase-title">${ph.title}</div>
+        <div class="phase-desc">${ph.desc}</div>
+        <div class="lesson-pills">${ph.pills.map((p,i) => `<span class="pill${i===ph.pills.length-1?' highlight':''}">${p}</span>`).join('')}</div>
+      </div>
+    </li>`).join('');
+  document.getElementById('m-counts').innerHTML = `
+    <div class="count-chip s"><div class="cc-label">⚡ 集中コース</div><div class="cc-val">${c.shuchu}</div></div>
+    <div class="count-chip y"><div class="cc-label">🌱 ゆっくりコース</div><div class="cc-val">${c.yukkuri}</div></div>`;
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeOnBg(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModal();
+}
+function switchPrice(type, btn) {
+  document.querySelectorAll('.price-toggle button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.price-table-wrap').forEach(el => el.classList.remove('show'));
+  document.getElementById('price-' + type).classList.add('show');
+}
+</script>
+</body>
+</html>
